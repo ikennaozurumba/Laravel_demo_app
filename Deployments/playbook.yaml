@@ -1,4 +1,4 @@
-# Playbook file: Automates the deployment of script.sh on Manages Nodes
+# Playbook file: Automates the deployment of setup.sh on Manages Nodes
 
 - name: Execute Deployment Script
   hosts: ManagedNode1
@@ -7,12 +7,12 @@
   tasks:
     - name: Copy Deployment Script
       copy:
-        src: ./script.sh
-        dest: /tmp/script.sh
+        src: ./setup.sh
+        dest: /tmp/setup.sh
         mode: 0775
 
     - name: Execute Deployment Script
-      shell: /tmp/script.sh >> /vagrant/ansible.log 2> ansible_err.log
+      shell: /tmp/setup.sh >> /vagrant/ansible.log 2> ansible_err.log
 
     - name: Set permission for /vagrant directory
       file:
