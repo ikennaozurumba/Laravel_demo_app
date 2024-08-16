@@ -18,10 +18,10 @@
    - [script_err.log](#script_err.log)
    - [uptime.log](#uptime.log)
 7. [Screenshots](#Screenshots)
-   - [Screenshot of ControlNode and ManagedNode1 on VB](#Screenshot of ControlNode and ManagedNode1 on VB)
-   - [Laravel app deployed on ControlNode](#Laravel app deployed on ControlNode)
-   - [Playbook Execution](#Playbook Execution)
-   - [Laravel app deployed on ManagedNode1](#Laravel app deployed on ManagedNode1)
+   - [Screenshot of ControlNode and ManagedNode1 on VB](#Screenshot_of_ControlNode_and_ManagedNode1_on_VB)
+   - [Laravel app deployed on ControlNode](#Laravel_app_deployed_on_ControlNode)
+   - [Playbook Execution](#Playbook_Execution)
+   - [Laravel app deployed on ManagedNode1](#Laravel_app_deployed_on_ManagedNode1)
 9. [Usage](#Usage)
 10. [References](#References)
 
@@ -515,15 +515,17 @@ ManagedNode1 ansible_host=192.168.33.13 ansible_user=vagrant ansible_connection=
 
 ## [Screenshots](Screenshots)
 
-### [Screenshot of ControlNode and ManagedNode1 on VB](Screenshot of ControlNode and ManagedNode1 on VB)
+### [Screenshot of ControlNode and ManagedNode1 on VB](Screenshot_of_ControlNode_and_ManagedNode1_on_VB)
 
-### [Laravel app deployed on ControlNode](Laravel app deployed on ControlNode)
+### [Laravel app deployed on ControlNode](Laravel_app_deployed_on_ControlNode)
 
-### [Playbook Execution](Playbook Execution)
+### [Playbook Execution](Playbook_Execution)
 
-### [Laravel app deployed on ManagedNode1](Laravel app deployed on ManagedNode1)
+### [Laravel app deployed on ManagedNode1](Laravel_app_deployed_on_ManagedNode1)
 
 
 ## [Usage](Usage)
+
+
                                                                                                                                              170,0-1       65% 
                                                                                                                                              65,0-1        15% 
