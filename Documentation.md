@@ -14,9 +14,16 @@
    - [inventory.ini](#inventory.ini)
    - [playbook.yaml](#playbook.yaml)
 5. [Log Files](#Log-files)
-6. [Screenshots](#Screenshots)
-7. [Usage](#Usage)
-8. [References](#References)
+   - [script.log](#script.log)
+   - [script_err.log](#script_err.log)
+   - [uptime.log](#uptime.log)
+7. [Screenshots](#Screenshots)
+   - [Screenshot of ControlNode and ManagedNode1 on VB](#Screenshot of ControlNode and ManagedNode1 on VB)
+   - [Laravel app deployed on ControlNode](#Laravel app deployed on ControlNode)
+   - [Playbook Execution](#Playbook Execution)
+   - [Laravel app deployed on ManagedNode1](#Laravel app deployed on ManagedNode1)
+9. [Usage](#Usage)
+10. [References](#References)
 
 ## [Introduction](Introduction)
 
@@ -505,5 +512,18 @@ ManagedNode1 ansible_host=192.168.33.13 ansible_user=vagrant ansible_connection=
 
 ```
 
+
+## [Screenshots](Screenshots)
+
+### [Screenshot of ControlNode and ManagedNode1 on VB](Screenshot of ControlNode and ManagedNode1 on VB)
+
+### [Laravel app deployed on ControlNode](Laravel app deployed on ControlNode)
+
+### [Playbook Execution](Playbook Execution)
+
+### [Laravel app deployed on ManagedNode1](Laravel app deployed on ManagedNode1)
+
+
+## [Usage](Usage)
                                                                                                                                              170,0-1       65% 
                                                                                                                                              65,0-1        15% 
