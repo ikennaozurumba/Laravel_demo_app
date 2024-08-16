@@ -1,0 +1,37 @@
+# Playbook file: Automates the deployment of script.sh on Manages Nodes
+
+- name: Execute Deployment Script
+  hosts: ManagedNode1
+  become: yes
+
+  tasks:
+    - name: Copy Deployment Script
+      copy:
+        src: ./script.sh
+        dest: /tmp/script.sh
+        mode: 0775
+
+    - name: Execute Deployment Script
+      shell: /tmp/script.sh >> /vagrant/ansible.log 2> ansible_err.log
+
+    - name: Set permission for /vagrant directory
+      file:
+        path: /vagrant
+        state: directory
+        mode: 0755   
+        owner: vagrant
+        group: vagrant
+
+    - name: Create uptime.log and set permissions for uptime.log file
+      file:
+        path: /vagrant/uptime.log
+        state: touch
+        mode: 0644
+
+    - name: Create a cron job to check the server's uptime every 1 am
+      cron:
+        name: "Log server uptime"
+        minute: "0"
+        hour: "1"
+        job: "uptime >> /vagrant/uptime.log"
+        user: vagrant

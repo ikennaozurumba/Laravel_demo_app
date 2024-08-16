@@ -35,6 +35,11 @@ Vagrant.configure("2") do |config|
       sudo systemctl restart ssh || sudo service ssh restart
     SHELL   
     control.vm.provision "shell", path: "./Deployments/setup.sh"
+    control.vm.provision "shell", inline: <<-SHELL
+    	# update apt && install ansible
+    	sudo apt-get update -y
+	sudo apt-get install ansible -y
+    SHELL
   end
     
     
