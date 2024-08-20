@@ -529,7 +529,7 @@ ManagedNode1 ansible_host=192.168.33.13 ansible_user=vagrant ansible_connection=
 
 The following steps detail how to use to use the project to deploy a LAMP stack and maintain the server environment.
 
-1. Clone this projects's github repository: []()
+1. Clone this projects's github repository: [Github_Repository](https://github.com/ikennaozurumba/Laravel_demo_app.git)
 2. Configure and provision the Vagrantfile to the desired ControlNode and ManagedNode server environments.
 3. Run `vagrant up` in the projects directory to bring up the virtual machines with the customized configurations.
 4. The ControlNode server will be setup with a LAMP stack as specified in the `setup.sh` script. Details of the provisioning as well as posible errors can be found in the script.log and script_err.log files, respectively.
@@ -544,7 +544,7 @@ The following steps detail how to use to use the project to deploy a LAMP stack 
 
 To contribute to this project, follow these steps:
 
-1. Fork the project's GitHub repository []().
+1. Fork the project's GitHub repository [Github_Repository](https://github.com/ikennaozurumba/Laravel_demo_app.git).
 
 2. Create a branch for the feature or bug fix.
 
