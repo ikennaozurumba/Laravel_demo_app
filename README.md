@@ -136,6 +136,10 @@ Screenshot of the Laravel application running on the ManagedNode1.
 
 Contributions are welcome! Please fork this repository, make your changes, and submit a pull request.
 
+Documentation
+For detailed instructions, refer to the [Project Documentation](https://github.com/ikennaozurumba/Laravel_demo_app/blob/main/Documentation.md).
+
+
 ## References
 
 - [Laravel GitHub Repository](https://github.com/laravel/laravel)
@@ -143,3 +147,7 @@ Contributions are welcome! Please fork this repository, make your changes, and s
 - [Vagrant Documentation](https://www.vagrantup.com/docs)
 - [codewithsusan](https://codewithsusan.com/notes/deploy-laravel-on-apache)
 - [Hamed-Ayodeji/Star-fish-a-laravel-project](https://github.com/Hamed-Ayodeji/Star-fish-a-laravel-project.git)
+
+
+## Author
+Ikenna Ozurumba
