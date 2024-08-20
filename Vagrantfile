@@ -33,42 +33,46 @@ Vagrant.configure("2") do |config|
       sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' "/etc/ssh/sshd_config"
       sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' "/etc/ssh/sshd_config"
       sudo systemctl restart ssh || sudo service ssh restart
-      SHELL   
+    SHELL   
     control.vm.provision "shell", path: "./Deployments/setup.sh"
     control.vm.provision "shell", inline: <<-SHELL
-    	# update apt && install ansible
-    	sudo apt-get update -y
-	sudo apt-get install ansible -y
-        SHELL
+      # update apt && install ansible
+      sudo apt-get update -y
+      sudo apt-get install ansible -y
+    SHELL
   end
     
-    
-    # Define ManagedNode
+  # Define ManagedNode
   config.vm.define "ManagedNode1" do |node1|
-     node1.vm.hostname = "ManagedNode1"
-     node1.vm.network "private_network", ip: "192.168.33.13"
+    node1.vm.hostname = "ManagedNode1"
+    node1.vm.network "private_network", ip: "192.168.33.13"
       
-     node1.vm.provider "virtualbox" do |v|
-       v.name = "ManagedNode1"
-       v.memory = 1024
-       v.cpus = 1
-     end
+    node1.vm.provider "virtualbox" do |v|
+      v.name = "ManagedNode1"
+      v.memory = 1024
+      v.cpus = 1
+    end
       
-     # Provisioning script
-     node1.vm.provision "shell", inline: <<-SHELL
-       echo "Hello, welcome to the managed node1 virtual machine"
+    # Provisioning script
+    node1.vm.provision "shell", inline: <<-SHELL
+      echo "Hello, welcome to the ManagedNode1 virtual machine"
       
-       if [[ ! -f /vagrant/.ssh/id_rsa ]]; then
-         echo -e "\n\n" >> /home/vagrant/.ssh/authorized_keys
-         cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
-         chmod 600 /home/vagrant/.ssh/authorized_keys
-         chown -R vagrant:vagrant /home/vagrant/.ssh
-       fi
+      # Ensure .ssh directory exists
+      mkdir -p /home/vagrant/.ssh
+      chmod 700 /home/vagrant/.ssh
+      chown -R vagrant:vagrant /home/vagrant/.ssh
+
+      # Add ControlNode's public key to authorized_keys if not already added
+      if ! grep -q "$(cat /vagrant/id_rsa.pub)" /home/vagrant/.ssh/authorized_keys 2>/dev/null; then
+        cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
+        chmod 600 /home/vagrant/.ssh/authorized_keys
+        chown vagrant:vagrant /home/vagrant/.ssh/authorized_keys
+      fi
         
-       sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' "/etc/ssh/sshd_config"
-       sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' "/etc/ssh/sshd_config"
-       sudo systemctl restart ssh || sudo service ssh restart
-       SHELL
+      sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' "/etc/ssh/sshd_config"
+      sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' "/etc/ssh/sshd_config"
+      sudo systemctl restart ssh || sudo service ssh restart
+    SHELL
   end
   
 end
