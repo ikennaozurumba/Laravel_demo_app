@@ -12,21 +12,23 @@
         mode: 0775
 
     - name: Execute Deployment Script
-      shell: /tmp/setup.sh >> /vagrant/ansible.log 2> ansible_err.log
+      shell: /tmp/setup.sh >> /vagrant/ansible.log 2>&1
 
     - name: Set permission for /vagrant directory
       file:
         path: /vagrant
         state: directory
-        mode: 0755   
+        mode: 0775   
         owner: vagrant
         group: vagrant
+      when: not ansible_check_mode
 
     - name: Create uptime.log and set permissions for uptime.log file
       file:
         path: /vagrant/uptime.log
         state: touch
         mode: 0644
+      when: not ansible_check_mode
 
     - name: Create a cron job to check the server's uptime every 1 am
       cron:
