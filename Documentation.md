@@ -23,7 +23,8 @@
    - [Playbook Execution](#Playbook_Execution)
    - [Laravel app deployed on ManagedNode1](#Laravel_app_deployed_on_ManagedNode1)
 9. [Usage](#Usage)
-10. [References](#References)
+10. [Contributions](#Contributions)
+11. [References](#References)
 
 ## [Introduction](Introduction)
 
@@ -525,6 +526,42 @@ ManagedNode1 ansible_host=192.168.33.13 ansible_user=vagrant ansible_connection=
 
 
 ## [Usage](Usage)
+
+The following steps detail how to use to use the project to deploy a LAMP stack and maintain the server environment.
+
+1. Clone this projects's github repository: []()
+2. Configure and provision the Vagrantfile to the desired ControlNode and ManagedNode server environments.
+3. Run `vagrant up` in the projects directory to bring up the virtual machines with the customized configurations.
+4. The ControlNode server will be setup with a LAMP stack as specified in the `setup.sh` script. Details of the provisioning as well as posible errors can be found in the script.log and script_err.log files, respectively.
+5. Once the VMs have been povisioned, run `vagrant ssh ControlNode` to ssh into the controlNode.
+6. Using the ControlNode IP address or domain name, access the Laravel application on a browser.
+7. On the ControlNode shell, run `ansible-playbook playbook.yaml` to deploy the LAMP stack on the ManagedNode.
+   - Ansible will copy the `script.sh` script into the ManagedNode and execute the script to deploy the LAMP stack on the ManagedNode server, which can be accessed using the server IP address or domain name.
+   - Standard output as well as any errors from the deployment on the ManagedNode can be found in the ansible.log and ansible_err.log file, respectively.
+   - Ansible will also setup a CRON job to check server uptime. The details of the CRON job can be found in the uptime.log file.
+
+## [Contributions](Contributions)
+
+To contribute to this project, follow these steps:
+
+1. Fork the project's GitHub repository []().
+
+2. Create a branch for the feature or bug fix.
+
+3. Make the changes and commit them to the branch.
+
+4. Submit a pull request to the main repository for review and integration.
+
+   ## [References](References)
+
+- [GitHub Repository for Vagrant](https://github.com/hashicorp/vagrant)
+- [GitHub Repository for Laravel](https://github.com/laravel/laravel)
+- [Vagrant Documentation](https://www.vagrantup.com/docs)
+- [Ansible Documentation](https://docs.ansible.com)
+- [Laravel PHP Framework](https://laravel.com)
+- [codewithsusan](https://codewithsusan.com/notes/deploy-laravel-on-apache)
+- [Hamed-Ayodeji/Star-fish-a-laravel-project](https://github.com/Hamed-Ayodeji/Star-fish-a-laravel-project.git)
+     
 
 
                                                                                                                                              170,0-1       65% 
