@@ -33,13 +33,13 @@ Vagrant.configure("2") do |config|
       sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' "/etc/ssh/sshd_config"
       sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' "/etc/ssh/sshd_config"
       sudo systemctl restart ssh || sudo service ssh restart
-    SHELL   
+      SHELL   
     control.vm.provision "shell", path: "./Deployments/setup.sh"
     control.vm.provision "shell", inline: <<-SHELL
     	# update apt && install ansible
     	sudo apt-get update -y
 	sudo apt-get install ansible -y
-    SHELL
+        SHELL
   end
     
     
@@ -68,7 +68,7 @@ Vagrant.configure("2") do |config|
        sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' "/etc/ssh/sshd_config"
        sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' "/etc/ssh/sshd_config"
        sudo systemctl restart ssh || sudo service ssh restart
-     SHELL
+       SHELL
   end
   
 end
