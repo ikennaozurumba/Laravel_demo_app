@@ -29,7 +29,7 @@
 
 ## Introduction
 
-Welcome to the Star Fish Laravel project! This project automates the provisioning and deployment of a LAMP (Linux, Apache, MySQL, PHP) stack using Vagrant, a Bash script, and Ansible. The Laravel application is sourced from the official Laravel GitHub repository, and this project streamlines the process of setting up a web server environment.
+Welcome to the Laravel_demo_app project! This project automates the provisioning and deployment of a LAMP (Linux, Apache, MySQL, PHP) stack using Vagrant, a Bash script, and Ansible. The Laravel application is sourced from the official Laravel GitHub repository, and this project streamlines the process of setting up a web server environment.
 
 ## Project Overview
 
@@ -46,7 +46,7 @@ The primary goal of this project is to automate the provisioning of two Ubuntu-b
 The Ansible playbook is used to:
 
 - Execute the Bash script on the ManagedNode.
-- Set up a cron job to check server uptime daily at midnight.
+- Set up a cron job to check server uptime daily at 1am.
 
 ### Requirements
 
@@ -130,7 +130,8 @@ Screenshot of the Laravel application running on the ManagedNode1.
 3. Run `vagrant up` to start the virtual machines with the specified configuration.
 4. SSH into the ControlNode using `vagrant ssh ControlNode`.
 5. Access the Laravel application on the ControlNode using its IP address.
-6. Run `ansible-playbook playbook.yaml` on the ControlNode to deploy the LAMP stack on the ManagedNode.
+6. Copy the [Deployments](https://github.com/ikennaozurumba/Laravel_demo_app/tree/main/Deployments) directory to the users home directory. 
+7. Run `ansible-playbook playbook.yaml` on the ControlNode to deploy the LAMP stack on the ManagedNode.
 
 ## Contributions
 
