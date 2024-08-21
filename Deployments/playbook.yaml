@@ -7,28 +7,43 @@
   tasks:
     - name: Copy Deployment Script
       copy:
-        src: ./setup.sh
-        dest: /tmp/setup.sh
-        mode: 0775
+        src: /vagrant/Deployments/setup.sh
+        dest: /home/vagrant/setup.sh
+        mode: '0755'
+
+    - name: Remove CRLF characters if present
+      replace:
+        path: /home/vagrant/setup.sh
+        regexp: '\r$'
+        replace: ''
+
+    - name: Ensure setup.sh is executable
+      file:
+        path: /home/vagrant/setup.sh
+        mode: '0755'
+        owner: vagrant
+        group: vagrant
+        state: file
 
     - name: Execute Deployment Script
-      shell: /tmp/setup.sh >> /vagrant/ansible.log 2>&1
+      shell: /home/vagrant/setup.sh >> /vagrant/ansible.log 2>&1
+      args:
+        executable: /bin/bash
 
     - name: Set permission for /vagrant directory
       file:
         path: /vagrant
         state: directory
-        mode: 0775   
+        mode: '0755'
         owner: vagrant
         group: vagrant
-      when: not ansible_check_mode
+
 
     - name: Create uptime.log and set permissions for uptime.log file
       file:
         path: /vagrant/uptime.log
         state: touch
-        mode: 0644
-      when: not ansible_check_mode
+        mode: '0644'
 
     - name: Create a cron job to check the server's uptime every 1 am
       cron:
