@@ -12,7 +12,6 @@
         mode: '0755'
         owner: vagrant
         group: vagrant
-      when: not ansible_check_mode
           
     - name: Copy Deployment Script
       copy:
@@ -25,6 +24,7 @@
         path: /home/vagrant/setup.sh
         regexp: '\r$'
         replace: ''
+      when: ansible_check_mode == false  # Skip this task in check mode
 
     - name: Ensure setup.sh is executable
       file:
@@ -33,11 +33,13 @@
         owner: vagrant
         group: vagrant
         state: file
+      when: ansible_check_mode == false  # Skip this task in check mode
 
     - name: Execute Deployment Script
       shell: /home/vagrant/setup.sh >> /vagrant/ansible.log 2>&1
       args:
         executable: /bin/bash
+      when: ansible_check_mode == false  # Skip this task in check mode
 
     - name: Create uptime.log and set permissions for uptime.log file
       file:
