@@ -4,7 +4,16 @@
   hosts: ManagedNode1
   become: yes
 
-  tasks:
+  tasks:    
+    - name: Ensure correct permission for /vagrant directory
+      file:
+        path: /vagrant
+        state: directory
+        mode: '0755'
+        owner: vagrant
+        group: vagrant
+      when: not ansible_check_mode
+          
     - name: Copy Deployment Script
       copy:
         src: /vagrant/Deployments/setup.sh
@@ -29,15 +38,6 @@
       shell: /home/vagrant/setup.sh >> /vagrant/ansible.log 2>&1
       args:
         executable: /bin/bash
-
-    - name: Set permission for /vagrant directory
-      file:
-        path: /vagrant
-        state: directory
-        mode: '0755'
-        owner: vagrant
-        group: vagrant
-
 
     - name: Create uptime.log and set permissions for uptime.log file
       file:
