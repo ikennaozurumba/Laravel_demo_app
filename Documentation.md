@@ -28,32 +28,32 @@
 
 ## [Introduction](Introduction)
 
-Welcome to the documentation for Star Fish Laravel project (Deploy LAMP stack). This documentation provides a comprehensive guide for automating the provisioning and deployment of a LAMP (Linux, Apache, Mysql, and PHP) stack using vagrant, a bash script, Ansible and a PHP application (Laravel). The project aims to streammline to the process of setting up a web server environment for hosting PHP application, in this case a Laravel application cloned from the official Laravel repository [Github Repository for Laravel](https://github.com/laravel/laravel)
+Welcome to the documentation for Laravel_demo_app project. This documentation provides a comprehensive guide for automating the provisioning and deployment of a LAMP (Linux, Apache, Mysql, and PHP) stack using vagrant, a bash script, Ansible and a PHP application (Laravel). The project aims to streammline to the process of setting up a web server environment for hosting PHP application, in this case a Laravel application cloned from the official Laravel repository [Github Repository for Laravel](https://github.com/laravel/laravel)
 
 ## [Project Overview](Project-Overview)
 
 ### [Objective](Objective)
 
-The primary objective of this project is to automate the provisioning of two ubuntu-based servers using vagrant . The automation involves the following steps:
-  1. Create a bash script to automate the deployment of the LAMP stack on the Control node.
-  2. Clone a PHP application from Github.
-  3. Install a the necessary packages
+The primary objective of this project is to automate the provisioning of two ubuntu-based servers using vagrant. The automation involves the following steps:
+  1. Write a bash script to automate the deployment of the LAMP stack on the Control node.
+  2. Clone Laravel PHP application from Github.
+  3. Install all the necessary packages and dependencies.
   4. Configure apache webserver and Mysql
-  5. Ensure bashscript is reusable and readble
+  5. Ensure the bash script is reusable and readble
 
 In addition to the bash script, an ansible playbook is used to:
-  1. Execute the bash script on the slave node  
-  2. Create a cron job to check the server's uptime everyday at midnight
+  1. Execute the bash script on the managed node.  
+  2. Create a cron job to check the server's uptime everyday at 1am
 
 It is also important to verify that the PHP application is accessible through the VM's IP address and screenshot taken as evidence.
 
 ## [Deployment Instructions](Deployment-Instructions)
 
-In this section, the steps to deploy the LAMP stack using vagrant, the bash script and the ansible playbook will be covered.
+In this section, the steps to deploy the LAMP stack using vagrant, bash script and the ansible playbook will be covered.
 
 ### Configuring multi-VM Servers with Vagrant
 
-Two ubuntu servers (ControlNode and ManagedNode) are provisioned by configuring the `Vagrantfile`. The file defines the configuration for the base box, , the network settings, and provisioning requirements.
+Two ubuntu servers (ControlNode and ManagedNode) are provisioned by configuring the `Vagrantfile`. The file defines the configuration for the base box, network settings, and provisioning requirements.
 
   1. **Vagrantfile Confuguration**: `ubuntu/focal64` is selected as the base box for both VM's, a private network with a static IP address is configured in the network settings for both VMs and `Virtualbox` is configured as the VM provider for both machines.
 
@@ -91,23 +91,23 @@ The configuration script can be found in [Vagrantfile](#Vagrantfile)
 
 ### Automating Deployment with Bash Script
 
-The `deploy.sh` [script](#deploy.sh) automates the deployment of the LAMP stack. It performs the following task:
+The `setup.sh` [script](#setup.sh) automates the deployment of the LAMP stack. It performs the following task:
 
   1. Add important repositories to the APT package manager.
   2. Updates and upgrades installed packages
-  3. Installs Apache, MYSQL, PHP, and other necessary packages
-  4. Configures Apache for Laravel application
-  5. Installs Composer and Sets permissions.
-  6. Clones the Laravel application from Github and configures it.
-  7. Setup the MYSQL database and update the .env` file.
-  8. Caches configuration values and runs database migrations.
+  3. Installs Apache, MYSQL, PHP, their dependencies and other necessary packages.
+  4. Installs Composer and Sets permissions.
+  5. Clones the Laravel application from Github and configures it.
+  6. Setup the MYSQL database and update the .env` file.
+  7. Caches configuration values and runs database migrations.
+  8. Configures Apache for Laravel application.
   9. Sets firewall rules to enable necessary ports
 
 ### Ansible Playbook Execution
 
-Th ansible playbook `playbook.yaml` automates the execution of `deploy.sh` [script](#deploy.sh) on the `ManagedNode` server and sets up a cron job to check the server uptime.
-  1. **Copying Deployment script**: The playbook copies the `deploy.sh` script to the `ManagedNode` server.
-  2. **Executing Deployment script**: The script gets executed and logs the output
+Th ansible playbook `playbook.yaml` automates the execution of `setup.sh` [script](#setup.sh) on the `ManagedNode` server and sets up a cron job to check the server uptime.
+  1. **Copy Deployment script**: The playbook copies the `setup.sh` script to the `ManagedNode1` server.
+  2. **Execute Deployment script**: The script gets executed and logs the output
   3. **Permission and Cron job**: The playbook ensures correct permissions for directories and creates a cron job to check the server uptime
 
 The Ansible playbook and it's configurations are documented in:
@@ -136,7 +136,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "ControlNode" do |control|
     control.vm.hostname = "ControlNode"
     control.vm.network "private_network", ip: "192.168.33.12"
-
+    
     # VM provider configuration
     control.vm.provider "virtualbox" do |v|
       v.name = "ControlNode"
@@ -148,7 +148,7 @@ Vagrant.configure("2") do |config|
     control.vm.provision "shell", inline: <<-SHELL
       # switch user to vagrant
       # Generate id_rsa key for connection with the ManagedNode
-      su - vagrant -c '
+      su - vagrant -c ' 
       if [[ ! -f /home/vagrant/.ssh/id_rsa ]]; then
         ssh-keygen -t rsa -b 2048 -f /home/vagrant/.ssh/id_rsa -q -N ""
       fi
@@ -158,45 +158,51 @@ Vagrant.configure("2") do |config|
       sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' "/etc/ssh/sshd_config"
       sudo systemctl restart ssh || sudo service ssh restart
     SHELL
+
+    # Additional provisioning script for ControlNode
     control.vm.provision "shell", path: "./Deployments/setup.sh"
+
     control.vm.provision "shell", inline: <<-SHELL
-        # update apt && install ansible
-        sudo apt-get update -y
-        sudo apt-get install ansible -y
+      # update apt && install ansible
+      sudo apt-get update -y
+      sudo apt-get install ansible -y
     SHELL
   end
-
-
-    # Define ManagedNode
+    
+  # Define ManagedNode
   config.vm.define "ManagedNode1" do |node1|
-     node1.vm.hostname = "ManagedNode1"
-     node1.vm.network "private_network", ip: "192.168.33.13"
+    node1.vm.hostname = "ManagedNode1"
+    node1.vm.network "private_network", ip: "192.168.33.13"
+      
+    node1.vm.provider "virtualbox" do |v|
+      v.name = "ManagedNode1"
+      v.memory = 1024
+      v.cpus = 1
+    end
+      
+    # Provisioning script for ManagedNode1
+    node1.vm.provision "shell", inline: <<-SHELL
+      echo "Hello, welcome to the ManagedNode1 virtual machine"
+      
+      # Ensure .ssh directory exists
+      mkdir -p /home/vagrant/.ssh
+      chmod 700 /home/vagrant/.ssh
+      chown -R vagrant:vagrant /home/vagrant/.ssh
 
-     node1.vm.provider "virtualbox" do |v|
-       v.name = "ManagedNode1"
-       v.memory = 1024
-       v.cpus = 1
-     end
-
-     # Provisioning script
-     node1.vm.provision "shell", inline: <<-SHELL
-       echo "Hello, welcome to the managed node1 virtual machine"
-
-       if [[ ! -f /vagrant/.ssh/id_rsa ]]; then
-         echo -e "\n\n" >> /home/vagrant/.ssh/authorized_keys
-         cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
-         chmod 600 /home/vagrant/.ssh/authorized_keys
-         chown -R vagrant:vagrant /home/vagrant/.ssh
-       fi
-
-       sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' "/etc/ssh/sshd_config"
-       sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' "/etc/ssh/sshd_config"
-       sudo systemctl restart ssh || sudo service ssh restart
-     SHELL
+      # Add ControlNode's public key to authorized_keys if not already added
+      if ! grep -q "$(cat /vagrant/id_rsa.pub)" /home/vagrant/.ssh/authorized_keys 2>/dev/null; then
+        cat /vagrant/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
+        chmod 600 /home/vagrant/.ssh/authorized_keys
+        chown vagrant:vagrant /home/vagrant/.ssh/authorized_keys
+      fi
+        
+      sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' "/etc/ssh/sshd_config"
+      sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' "/etc/ssh/sshd_config"
+      sudo systemctl restart ssh || sudo service ssh restart
+    SHELL
   end
-
-end
-                                                                                                                                             1,1           Top
+  
+end                                                                                                                                             1,1           Top
 ```
 
 
@@ -479,29 +485,46 @@ ManagedNode1 ansible_host=192.168.33.13 ansible_user=vagrant ansible_connection=
   hosts: ManagedNode1
   become: yes
 
-  tasks:
-    - name: Copy Deployment Script
-      copy:
-        src: ./setup.sh
-        dest: /tmp/setup.sh
-        mode: 0775
-
-    - name: Execute Deployment Script
-      shell: /tmp/setup.sh >> /vagrant/ansible.log 2> ansible_err.log
-
-    - name: Set permission for /vagrant directory
+  tasks:    
+    - name: Ensure correct permission for /vagrant directory
       file:
         path: /vagrant
         state: directory
-        mode: 0755
+        mode: '0755'
         owner: vagrant
         group: vagrant
+      when: not ansible_check_mode
+          
+    - name: Copy Deployment Script
+      copy:
+        src: /vagrant/Deployments/setup.sh
+        dest: /home/vagrant/setup.sh
+        mode: '0755'
+
+    - name: Remove CRLF characters if present
+      replace:
+        path: /home/vagrant/setup.sh
+        regexp: '\r$'
+        replace: ''
+
+    - name: Ensure setup.sh is executable
+      file:
+        path: /home/vagrant/setup.sh
+        mode: '0755'
+        owner: vagrant
+        group: vagrant
+        state: file
+
+    - name: Execute Deployment Script
+      shell: /home/vagrant/setup.sh >> /vagrant/ansible.log 2>&1
+      args:
+        executable: /bin/bash
 
     - name: Create uptime.log and set permissions for uptime.log file
       file:
         path: /vagrant/uptime.log
         state: touch
-        mode: 0644
+        mode: '0644'
 
     - name: Create a cron job to check the server's uptime every 1 am
       cron:
@@ -510,7 +533,6 @@ ManagedNode1 ansible_host=192.168.33.13 ansible_user=vagrant ansible_connection=
         hour: "1"
         job: "uptime >> /vagrant/uptime.log"
         user: vagrant
-
 ```
 
 
@@ -535,9 +557,10 @@ The following steps detail how to use to use the project to deploy a LAMP stack 
 4. The ControlNode server will be setup with a LAMP stack as specified in the `setup.sh` script. Details of the provisioning as well as posible errors can be found in the script.log and script_err.log files, respectively.
 5. Once the VMs have been povisioned, run `vagrant ssh ControlNode` to ssh into the controlNode.
 6. Using the ControlNode IP address or domain name, access the Laravel application on a browser.
-7. On the ControlNode shell, run `ansible-playbook playbook.yaml` to deploy the LAMP stack on the ManagedNode.
+7. On the ControlNode shell, copy the Deployments directory from /vagrant/Deployments to the users home directory, e.g., /home/vagrant/Deployments, this is because ansible will not recognize the ansible configuration file `ansible.cfg` placed in a world-writeable directory for security reasons.
+8. Navigate to the copied directory from the previous step and run `ansible-playbook playbook.yaml` to deploy the LAMP stack on the ManagedNode.
    - Ansible will copy the `script.sh` script into the ManagedNode and execute the script to deploy the LAMP stack on the ManagedNode server, which can be accessed using the server IP address or domain name.
-   - Standard output as well as any errors from the deployment on the ManagedNode can be found in the ansible.log and ansible_err.log file, respectively.
+   - Standard output as well as any errors from the deployment on the ManagedNode can be found in the ansible.log file.
    - Ansible will also setup a CRON job to check server uptime. The details of the CRON job can be found in the uptime.log file.
 
 ## [Contributions](Contributions)
