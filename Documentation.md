@@ -542,14 +542,21 @@ ManagedNode1 ansible_host=192.168.33.13 ansible_user=vagrant ansible_connection=
 ![Screenshot of ControlNode and ManagedNode1 on VB](./Screenshots/Control&ManagedNode_on_VB.png)
 
 ### [Laravel app deployed on ControlNode](Laravel_app_deployed_on_ControlNode)
+
 ![Laravel app deployed on ControlNode](./Screenshots/ControlNode_Laravel.png)
+
 ![Laracast_page on ControlNode](./Screenshots/Laracast_page_COntrolNode.png)
 
+
 ### [Playbook Execution](Playbook_Execution)
+
 ![Playbook Execution](./Screenshots/Ansible_execution.png)
 
+
 ### [Laravel app deployed on ManagedNode1](Laravel_app_deployed_on_ManagedNode1)
+
 ![Laravel app deployed on ManagedNode1](./Screenshots/ManagedNode_laravel.png)
+
 ![Laracast_page on ManagedNode](./Screenshots/Laracast_page_ManagedNode.png)
 
 
